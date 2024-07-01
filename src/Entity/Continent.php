@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ContinentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContinentRepository::class)]
@@ -15,6 +17,17 @@ class Continent
 
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
+
+    /**
+     * @var Collection<int, Pays>
+     */
+    #[ORM\OneToMany(targetEntity: Pays::class, mappedBy: 'continents')]
+    private Collection $pays;
+
+    public function __construct()
+    {
+        $this->pays = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -31,5 +44,40 @@ class Continent
         $this->nom = $nom;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Pays>
+     */
+    public function getPays(): Collection
+    {
+        return $this->pays;
+    }
+
+    public function addPay(Pays $pay): static
+    {
+        if (!$this->pays->contains($pay)) {
+            $this->pays->add($pay);
+            $pay->setContinents($this);
+        }
+
+        return $this;
+    }
+
+    public function removePay(Pays $pay): static
+    {
+        if ($this->pays->removeElement($pay)) {
+            // set the owning side to null (unless already changed)
+            if ($pay->getContinents() === $this) {
+                $pay->setContinents(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom;
     }
 }
