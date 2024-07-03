@@ -19,11 +19,11 @@ class Marque
     private ?string $nom = null;
 
     #[ORM\ManyToOne(inversedBy: 'marques')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Pays $pays = null;
 
     #[ORM\ManyToOne(inversedBy: 'marques')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Fabricant $fabricants = null;
 
     /**
