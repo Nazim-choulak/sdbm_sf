@@ -1,35 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Fabricant index{% endblock %}
+{% block title %}Fabricant index
+{% endblock %}
 
 {% block body %}
-    <h1>Fabricant index</h1>
+	<div id="zone-affichage" class="container-fluid text-center">
+		<div class='row '>
+			<div class='col-md-3 col-12 mb-2 '>
+				<a href="{{ path('app_fabricant_new') }}">
+					<button type='button' class='btn btn-primary col-12 bi bi-plus-circle' id="btn-ajout">&nbsp;Ajouter</button>
+				</a>
+			</div>
+			<div class='col-md-9 col-12'><input type='search' class=' form-control col-12' id='search' placeholder='Recherche...' name='search'></div>
+		</div><br>
+	</div>
+	<div id="zone-affichage" class="container-fluid text-center">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nom</th>
+					<th>actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for fabricant in fabricants %}
+					<tr>
+						<td>{{ fabricant.id }}</td>
+						<td>{{ fabricant.nom }}</td>
+						<td>
+							<a href="{{ path('app_fabricant_show', {'id': fabricant.id}) }}">show</a>
+							<a href="{{ path('app_fabricant_edit', {'id': fabricant.id}) }}">edit</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="3">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for fabricant in fabricants %}
-            <tr>
-                <td>{{ fabricant.id }}</td>
-                <td>{{ fabricant.nom }}</td>
-                <td>
-                    <a href="{{ path('app_fabricant_show', {'id': fabricant.id}) }}">show</a>
-                    <a href="{{ path('app_fabricant_edit', {'id': fabricant.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_fabricant_new') }}">Create new</a>
 {% endblock %}
